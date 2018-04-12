@@ -505,6 +505,79 @@
         <li>Mutable - values can be changed (objects).</li>
     </ul>
 
+    <h2>Rest Parameters</h2>
+    <p>It can be useful for a function to accept any number of arguments. For example,
+            Math.max computes the maximum of all the arguments it is given.
+            To write such a function, you put three dots before the function’s last parameter,</p>
+
+    <div class="code">
+        <pre>
+            function max(...numbers)
+            {
+                let biggest = -Infinity;
+                for (let number of numbers)
+                {
+                    if(number>biggest)
+                        biggest = number;
+                }
+                return biggest;
+            }
+
+            document.write(max(2,3,23,1,2,3,11));
+            document.write(max(34,23));
+            document.write(max(23,354354));
+            document.write(max(1));
+            document.write(max());
+        </pre>
+    </div>
+    <output class="output">
+        <code>
+            <script>
+                function max(...numbers)
+                {
+                    let biggest = -Infinity;
+                    for (let number of numbers)
+                    {
+                        if(number>biggest)
+                            biggest = number;
+                    }
+                    return biggest;
+                }
+
+                document.write(max(2,3,23,1,2,3,11));
+                document.write("<br>");
+                document.write(max(34,23));
+                document.write("<br>");
+                document.write(max(23,354));
+                document.write("<br>");
+                document.write(max(1));
+                document.write("<br>");
+                document.write(max());
+            </script>
+        </code>
+    </output>
+
+    <p class="note">
+            If there are other parameters before it, their
+            values aren’t part of that array.
+    </p>
+
+    <p>A rest parameter can accept an array and spread it out.</p>
+    <p class="function">To spread out elements of arrays in a rest parameter, precede the array with '...'.</p>
+    <div class="code">
+        <pre>
+            let nums = [2,23,5,6,343,5,3];
+            document.write(max(...nums));
+        </pre>
+    </div>
+    <output class="output">
+        <code>
+            <script>
+                let nums = [2,23,5,6,343,5,3];
+                document.write(max(...nums));
+            </script>
+        </code>
+    </output>
     <h2>The Math Object</h2>
     <p><code>Math</code> is a grab-bag of number-related utility functions.</p>
     <p>The Math object is used as a container to group a bunch of related functionality.
@@ -536,7 +609,7 @@
     </ul>
     <h2>Destructuring</h2>
     <p>The elements of an array can be given a name like variables with let, const, and var.</p>
-    <p>One might do this:</p>
+    <p>One might do this,</p>
     <div class="code">
         <pre>
             let lib = [1,2,3,4,5];
@@ -615,7 +688,7 @@
     <h2>JSON</h2>
     <p><i>Serializing</i> the data means it is converted to a flat description.</p>
     <p><abbr title="JavaScript Object Notation">JSON</abbr> is a widely used data storage and communication format in the Web.</p>
-    <p>Rules of JSON:</p>
+    <p>Rules of JSON</p>
     <ul>
         <li>All property names have to be surrounded by double quotes.</li>
         <li>Only simple data expressions are allowed—no function calls, bindings, or
@@ -623,7 +696,7 @@
         <li>Comments are not allowed in JSON</li>
     </ul>
 
-    <p>An example of a JSON data:</p>
+    <p>An example of a JSON data,</p>
     <div class="code">
         <pre>
             {

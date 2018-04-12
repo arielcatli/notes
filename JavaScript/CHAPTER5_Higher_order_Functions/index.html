@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Chapter 5. Higher-order Functions</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" media="screen" href="../styles/format.css" />
+    <script src="main.js"></script>
+</head>
+<body>
+    <h1>Chapter 5. Higher-order Functions</h1>
+    <h2>Abstraction</h2>
+    <p>Abstractions hide details and give us the ability to talk about
+            problems at a higher (or more abstract) level.</p>
+    
+    <p>Here is a function that repeats a function, <i>n</i> times.</p>
+    <div class="code">
+        <pre>
+            function repeatFunction(n, fct)
+            {
+                for(let i = 0; i < n; i++)
+                    fct();
+            }
+        </pre>
+    </div>
+    <p>The funtion <code>repeatFunction()</code> can be passed the number of times to repeat the function, <i>n</i>, and the function to repeat, <code>fct</code>.</p>
+    <p>Functions need not be binded to bindings when passing as a parameter to another function.</p>
+    <div class="code">
+        <pre>
+            function repeatFunction(n, fct)
+            {
+                for(let i = 0; i < n; i++)
+                    fct();
+            }
+
+            repeatFunction(10, function()
+            {
+                document.write("Hello");
+            });
+        </pre>
+    </div>
+    <output class="output">
+        <code>
+            <script>
+                function repeatFunction(n, fct)
+                {
+                    for(let i = 0; i < n; i++)
+                        fct();
+                }
+            
+                repeatFunction(10, function()
+                {
+                    document.write("Hello");
+                    document.write("<br>");
+                });
+            </script>
+        </code>
+    </output>
+    <p>The code above can be simplified using the arrow notation.</p>
+    <div class="code">
+        <pre>
+            repeatFunction(10, () => {document.write("Hello");});
+        </pre>
+    </div>
+    <output class="output">
+        <code>
+            <script>
+                repeatFunction(10, () => {document.write("Hello"); document.write("<br>");});
+            </script>
+        </code>
+    </output>
+    <h2>Higher-order Functions</h2>
+    <p>Functions that operate on other functions, either by taking them as arguments
+            or by returning them, are called higher-order functions.</p>
+    
+    <p>An example of higher-order function,</p>
+    <div class="code">
+        <pre>
+            function greaterThan(number)
+            {
+                return m => m > number;
+            }
+
+            let greaterThan10 = greaterThan(10);
+            document.write(greaterThan10(11));
+        </pre>
+    </div>
+    <output class="output">
+        <code>
+            <script>
+                function greaterThan(number)
+                {
+                    return m => m > number;
+                }
+
+                let greaterThan10 = greaterThan(10);
+                document.write(greaterThan10(11));
+            </script>
+        </code>
+    </output>
+
+    <p>Functions can also change other functions.</p>
+    <div class="code">
+        <pre>
+            function logger(f)
+            {
+                return (...args) =>
+                {
+                    document.write("called with the arguments: ", args);
+                    return f(...args);
+                }
+            }
+
+            document.write(logger(Math.min)(1,2,3,4));
+        </pre>
+    </div>
+    <output class="output">
+        <code>
+            <script>
+                function logger(f)
+                {
+                    return (...args) =>
+                    {
+                        document.write("called with the arguments: ", args);
+                        document.write("<br>");
+                        return f(...args);
+                    }
+                }
+
+                document.write(logger(Math.min)(1,2,3,4));
+            </script>
+        </code>
+    </output>
+
+    <p>A function can also alter the control flow.</p>
+    <div class="code">
+        <pre>
+            function unless(test, then)
+            {
+                if(test) then();
+            }
+
+            unless(3<4, ()=>{document.write("That is true!");});
+        </pre>
+    </div>
+    <output class="output">
+        <code>
+            <script>
+                function unless(test, then)
+                {
+                    if(test) then();
+                }
+
+                unless(3<4, ()=>{document.write("That is true!");});
+            </script>
+        </code>
+    </output>
+
+    <p>There is a built-in array method called <code>forEach()</code> which runs the function argument on every element of the array.</p>
+    <div class="code">
+        <pre>
+            let names = ["Ariel", "Jayvee", "Maria"];
+            names.forEach(name=>{document.write(name)});
+        </pre>
+    </div>
+    <output class="output">
+        <code>
+            <script>
+                let names = ["Ariel", "Jayvee", "Maria"];
+                names.forEach(name=>{document.write(name); document.write("<br>");});
+            </script>
+        </code>
+    </output>
+
+    <h2>Filtering Arrays</h2>
+    <p>The code below is used to filter an array.</p>
+    <div class="code">
+        <pre>
+            function filter(array, test)
+            {
+                let passed = []
+                for(let element of array)
+                {
+                    if(test(element))
+                        passed.push(element);
+                }
+                return passed;
+            }
+
+            function test(base)
+            {
+                return grade=>
+                {
+                    if (grade > base)
+                        return grade;
+                }
+            }
+
+            let test90 = test(90);
+            let grades = [98, 76, 66, 66, 76, 100];
+            document.write(filter(grades, test90));
+        </pre>
+    </div>
+    <output class="output">
+        <code>
+            <script>
+                function filter(array, test)
+                {
+                    let passed = []
+                    for(let element of array)
+                    {
+                        if(test(element))
+                            passed.push(element);
+                    }
+                    return passed;
+                }
+
+                function test(base)
+                {
+                    return grade=>
+                    {
+                        if (grade > base)
+                            return grade;
+                    }
+                }
+
+                let test90 = test(90);
+                let grades = [98, 76, 66, 66, 76, 100];
+                document.write(filter(grades, test90));
+            </script>
+        </code>
+    </output>
+    <p>The <code>filter()</code> function is a pure function since it did not modify any array.</p>
+    <p class="function">Like <code>forEach()</code>, <code>filter()</code> is a standard array method.</p>
+
+    <p>To simplify the code above,</p>
+    <div class="code">
+        <pre>
+            document.write(grades.filter(test90));
+        </pre>
+    </div>
+    <output class="output">
+        <code>
+            <script>
+                document.write(grades.filter(test90));
+            </script>
+        </code>
+    </output>
+
+    <h2>Transforming with Map</h2>
+    <p>The map method transforms an array by applying a function to all of its
+            elements and building a new array from the returned values. The new array
+            will have the same length as the input array, but its content will have been
+            mapped to a new form by the function.</p>
+    <div class="code">
+        <pre>
+            function map(array, transform)
+            {
+                let mapped = [];
+                for (let element of array)
+                    mapped.push(transform(element));
+                return mapped;
+            }
+
+            let logs = [{name: "Ariel", shift: "Morning"},{name: "Joshua", shift: "Evening"},{name: "Jayvee", shift: "Afternoon"}];
+            document.write(map(logs, m=> m.name));
+            document.write(map(logs, m=> m.shift));
+        </pre>
+    </div>
+    <output class="output">
+        <code>
+            <script>
+                function map(array, transform)
+                {
+                    let mapped = [];
+                    for (let element of array)
+                        mapped.push(transform(element));
+                    return mapped;
+                }
+
+                let logs = [{name: "Ariel", shift: "Morning"},{name: "Joshua", shift: "Evening"},{name: "Jayvee", shift: "Afternoon"}];
+                document.write(map(logs, m=> m.name));
+                document.write("<br>");
+                document.write(map(logs, m=> m.shift));
+            </script>
+        </code>
+    </output>
+    <p class="function">Like <code>forEach()</code>, <code>map()</code> is a standard array method.</p>
+    <p>The code above can be simplified,</p>
+    <div class="code">
+        <pre>
+            document.write(logs.map(m=>m.name));
+            document.write(logs.map(m=>m.shift));
+        </pre>
+    </div>
+    <output class="output">
+        <code>
+            <script>
+                document.write(logs.map(m=>m.name));
+                document.write("<br>");
+                document.write(logs.map(m=>m.shift));
+            </script>
+        </code>
+    </output>
+
+    <h2>Summarizing with Reduce</h2>
+    <p>Another common thing to do with arrays is computing a single value from
+            them. Our recurring example, summing a collection of numbers, is an instance
+            of this.</p>
+
+    <p>The higher-order operation that represents this pattern is called reduce (sometimes
+            also called fold). It builds a value by repeatedly taking a single element
+            from the array and combining it with the previous value.</p>
+
+    <div class="code">
+        <pre>
+            function reduce(array, folding, start)
+            {
+                let current = start;
+                for (let element of array)
+                    current = folding(current, element);
+                return current;
+            }
+
+            function sum(a,b)
+            {
+                return a+b;
+            }
+
+            let mnms = [2,4,52,3,54,23,23,5,6];
+            document.write(reduce(mnms, sum, 0));
+        </pre>
+    </div>
+    <output class="output">
+        <code>
+            <script>
+                function reduce(array, folding, start)
+                {
+                    let current = start;
+                    for (let element of array)
+                        current = folding(current, element);
+                    return current;
+                }
+
+                function sum(a,b)
+                {
+                    return a+b;
+                }
+
+                let mnms = [2,4,52,3,54,23,23,5,6];
+                document.write(reduce(mnms, sum, 0));
+            </script>
+        </code>
+    </output>
+    <p class="function">Like <code>forEach()</code>, <code>reduce()</code> is a standard array method.</p>
+
+    <p>The code above can be simplified,</p>
+    <div class="code">
+        <pre>
+            document.write(mnms.reduce(sum));
+        </pre>
+    </div>
+    <output class="output">
+        <code>
+            <script>
+                document.write(mnms.reduce(sum));
+            </script>
+        </code>
+    </output>
+    <p class="note">The <code>reduce()</code> method accepts a second argument which is the starting accumulated value.</p>
+</body>
+</html>
