@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Chapter 4. Data Structures: Objects and Arrays</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" media="screen" href="../styles/format.css" />
+    <script src="main.js"></script>
+</head>
+<body>
+    <h1>Chapter 4. Data Structures: Objects and Arrays</h1>
+    <p>Objects
+        allow us to group values—including other objects—together to build more
+        complex structures.</p>
+
+    <h2>Arrays</h2>
+    <p>An <i>array</i> is a datatype specifically used for storing sequences of values. It is a list of values between square brackets.</p>
+    <div class="code">
+        <pre>let list_numbers = [2,3,4,5,2,3,545,34];</pre>
+        <pre>document.write(list_numbers[3]);</pre>
+    </div>
+
+    <output class="output">
+        <code>
+            <script>
+                let list_numbers = [2,3,4,5,2,3,545,34];
+                document.write(list_numbers[3]);
+            </script>
+        </code>
+    </output>
+
+    <h2>Properties</h2>
+    <p class="function">To access a property of a value, use the . operator.</p>
+    
+
+    <div class="code">
+        <pre>
+            let list_numbers2 = [23,2,5,2,3,43,3,1];
+            document.write(list_numbers2.length);
+        </pre>
+    </div>
+    <output class="output">
+        <code>
+            <script>
+                let list_numbers2 = [23,2,5,2,3,43,3,1];
+                document.write(list_numbers2.length);
+            </script>
+        </code>
+    </output>
+
+    <p class="note">The Math object is a collection of math related constant and functions.</p>
+    <p class="note">All objects in JavaScript have properties except the <code>null</code> and the <code>undefined</code> values.</p>
+
+    <h3>Accessing Properties in JavaScript</h3>
+    <ol>
+        <li>Dot
+            <div class="code">
+                <pre>
+                    let list = [2,3,34,1,3,3,4,5,3,];
+                    document.write(list.length);
+                </pre>
+            </div>
+            <output class="output">
+                <code>
+                    <script>
+                        let list = [2,3,34,1,3,3,4,5,3,];
+                        document.write(list.length);
+                    </script>
+                </code>
+            </output>
+        </li>
+        <li>Square Brackets
+            <div class="code">
+                <pre>
+                    let list2 = [23,34,5,23,34,54,24];
+                    document.write(list2["length"]);
+                </pre>
+            </div>
+            <output class="output">
+                <code>
+                    <script>
+                        let list2 = [23,34,5,23,34,54,24];
+                        document.write(list2["length"]);
+                    </script>
+                </code>
+            </output>
+        </li>
+    </ol>
+
+    <p class="note">When using square brackets, the expression between the brackets is evaluated
+            to get the property name. Whereas value.x fetches the property of value
+            named “x”, value[x] tries to evaluate the expression x and uses the result as
+            the property name.</p>
+
+    <p class="note">Property names can have spaces in them. To reference it, use quotation marks.</p>
+    <p class="note">The elements in an array are stored as the array’s properties, using numbers
+            as property names.</p>
+
+    <h2>Methods</h2>
+    <p class="note">Every string has the <code>toUpperCase</code> property which converts the string into uppercase.</p>
+    <p>Properties that contain functions are called <i>methods</i>.</p>
+
+    <h3>Some Array Methods</h3>
+    <ol>
+        <li>push
+            <div class="code">
+                <pre>
+                    let sequence = [1,2,3,23,3];
+                    document.write(sequence);
+                    sequence.push(99);
+                    document.write(sequence);
+                </pre>
+            </div>
+            <output class="output">
+                <code>
+                    <script>
+                        let sequence = [1,2,3,23,3];
+                        document.write(sequence);
+                        sequence.push(99);
+                        document.write("<br>");
+                        document.write(sequence);
+                    </script>
+                </code>
+            </output>
+        </li>
+        <li>pop
+            <div class="code">
+                <pre>
+                    let sequence2 = [1,3,341,23,34,3];
+                    document.write(sequence2);
+                    document.write(sequence2.pop());
+                    document.write(sequence2);
+                </pre>
+            </div>
+            <output class="output">
+                <code>
+                    <script>
+                        let sequence2 = [1,3,341,23,34,3];
+                        document.write(sequence2);
+                        document.write("<br>");
+                        document.write(sequence2.pop());
+                        document.write("<br>");
+                        document.write(sequence2);
+                    </script>
+                </code>
+            </output>
+        </li>
+        <li>shift (works with the first index - pop)
+            <div class="code">
+                <pre>
+                    let list3 = [2,3,5412,3];
+                    document.write(list3);
+                    list3.shift();
+                    document.write(list3);
+            
+                </pre>
+            </div>
+            <output class="output">
+                <code>
+                    <script>
+                        let list3 = [2,3,5412,3];
+                        document.write(list3);
+                        list3.shift();
+                        document.write("<br>");
+                        document.write(list3);
+                
+                    </script>
+                </code>
+            </output>
+        </li>
+        <li>unshift (works with the first index - push)
+            <div class="code">
+                <pre>
+                    let list4 = [12,3,32,31,23];
+                    document.write(list4);
+                    list4.unshift(99);
+                    document.write(list4);
+                </pre>
+            </div>
+            <output class="output">
+                <code>
+                    <script>
+                        let list4 = [12,3,32,31,23];
+                        document.write(list4);
+                        document.write("<br>");
+                        list4.unshift(99);
+                        document.write(list4);
+                    </script>
+                </code>
+            </output>
+        </li>
+        <li>indexOf
+            <p class="function">This returns the index of the element in query. If it doesn't exists, the function will return -1. The search begins
+                on the first index.</p>
+            <p class="function">It has a second argument which sets the start index of the search.</p>
+
+            </p>
+            <div class="code">
+                <pre>
+                    let list5 = [23,4,34,25,2];
+                    document.write(list5);
+                    document.write(list5.indexOf(23));
+                    document.write(list5.indexOf(3));
+                </pre>
+            </div>
+            <output class="output">
+                <code>
+                    <script>
+                        let list5 = [23,4,34,25,2];
+                        document.write(list5);
+                        document.write("<br>");
+                        document.write(list5.indexOf(23));
+                        document.write("<br>");
+                        document.write(list5.indexOf(3));
+                    </script>
+                </code>
+            </output>
+        </li>
+        <li>lastIndexOf
+            <p class="function">This is similar to <code>indexOf</code> but it searches the last index first. The second
+            argument sets the beginning of the search (from highest index to 0).</p>
+            <div class="code">
+                <pre>
+                    let list6 = [23,4,3,5,54,3,3,4];
+                    document.write(list6);
+                    document.write(list6.lastIndexOf(4));
+                    document.write(list6.lastIndexOf(99));
+                </pre>
+            </div>
+            <output class="output">
+                <code>
+                    <script>
+                        let list6 = [23,4,3,5,54,3,3,4];
+                        document.write(list6);
+                        document.write("<br>");
+                        document.write(list6.lastIndexOf(4));
+                        document.write("<br>");
+                        document.write(list6.lastIndexOf(99));
+                    </script>
+                </code>
+            </output>
+        </li>
+        <li>slice
+            <p class="function">This returns a new array that is a subset of the sliced array. The first argument is the point of slicing (inclusive of the index) until the second argument (exclusive of this index).
+                When the end index is not given, the slicing will continue to the end index of the sliced array.</p>
+            <div class="code">
+                <pre>
+                    let list7 = [23,3,5,23,23,5,23,5,5,3];
+                    document.write(list7);
+                    document.write(list7.slice(0,5));
+                </pre>
+            </div>
+            <output class="output">
+                <code>
+                    <script>
+                        let list7 = [23,3,5,23,23,5,23,5,5,3];
+                        document.write(list7);
+                        document.write("<br>");
+                        document.write(list7.slice(0,5));
+                    </script>
+                </code>
+            </output>
+        </li>
+        <li>concat
+            <p class="function">This function glues together two or more arrays and return a new array containing them. This is similar to the + operator when applied to arrays.</p>
+            <div class="code">
+                <pre>
+                    let glued = [];
+                    glued = glued.concat([2,33,4,5,34,]);
+                    document.write(glued);
+                    glued = glued.concat([23,5,6,6,54,4]);
+                    document.write(glued);
+                    glued += [2,23,3,4,5,3,5,99];
+                    document.write(glued);
+                </pre>
+            </div>
+            <output class="output">
+                <code>
+                    <script>
+                        let glued = [];
+                        glued = glued.concat([2,33,4,5,34,]);
+                        document.write(glued);
+                        document.write("<br>");
+                        glued = glued.concat([23,5,6,6,54,4]);
+                        document.write(glued);
+                        glued += [2,23,3,4,5,3,5,99];
+                        document.write("<br>");
+                        document.write(glued);
+                    </script>
+                </code>
+            </output>
+            <p class="note">If you pass concat an argument that is not an array, that value will be added
+                    to the new array as if it was a one-element array.</p>
+        </li>
+    </ol>
+
+    <p class="note">When a property is added to immutable values, it is ignored by JavaScript.</p>
+
+    <h3>Some String Methods</h3>
+    <ul>
+        <li>indexOf
+            <p class="function">This is similar to searching for an element in an array. A substring with more than one character may be searched for.</p>
+        </li>
+        <li>trim
+            <p class="function">This is used to trim whitespaces (spaces, newlines, tabs, and similar characters) from 
+                the start and the end of the string.
+            </p>
+            <div class="code">
+                <pre>
+                    document.write("     .hello.    ");
+                    document.write("     .hello.    ".trim());
+                </pre>
+            </div>
+            <output class="output">
+                <code>
+                    <script>
+                        document.write("     .hello.    ");
+                        document.write("<br>");
+                        document.write("     .hello.    ".trim());
+                    </script>
+                </code>
+            </output>
+        </li>
+        <li>padStart
+            <p class="function">This function pads a string with the character specified in the second argument. The first argument specifies the width of the string.</p>
+            <div class="code">
+                <pre>
+                    document.write(String("A").padStart(10, '*'));
+                </pre>
+            </div>
+            <output class="output">
+                <code>
+                    <script>
+                        document.write(String("A").padStart(10, '*'));
+                    </script>
+                </code>
+            </output>
+        </li>
+        <li>split
+            <p class="function">A string can be split with a delimiter using the split() method. It returns an array of the split strings. The first argument is the delimiter.</p>
+            <div class="code">
+                <pre>
+                    document.write("Hello world I am Ariel.".split(" "));
+                </pre>
+            </div>
+            <output class="output">
+                <code>
+                    <script>
+                        document.write("Hello world I am Ariel.".split(" "));
+                    </script>
+                </code>
+            </output>
+        </li>
+        <li>join
+            <p class="function">To join together elements of an array or a string into a new string, use the join() method. The first index will be the delimiter for the new string returned.</p>
+            <div class="code">
+                <pre>
+                    document.write("Hello world I am Ariel".split(" ").join("."));
+                </pre>
+            </div>
+            <output class="output">
+                <code>
+                    <script>
+                        document.write("Hello world I am Ariel".split(" ").join("."));
+                    </script>
+                </code>
+            </output>
+        </li>
+        <li>repeat
+            <p class="function">To repeat a string, use the repeat() method. This returns a new string with the repeated substring. The first argument is the number of times to repeat the string.</p>
+            <div class="code">
+                <pre>
+                    document.write("HA".repeat(10));
+                </pre>
+            </div>
+            <output class="output">
+                <code>
+                    <script>
+                        document.write("HA".repeat(10));
+                    </script>
+                </code>
+            </output>
+        </li>
+    </ul>
+
+    <h2>Objects</h2>
+    <p>Values of the type <code>object</code> are arbitrary collections of properties.</p>
+    <div class="code">
+        <pre>
+            let obj = 
+            {
+                name: "Ariel",
+                age: 22,
+                gender: "Male"
+            };
+            document.write(obj.name);
+        </pre>
+    </div>
+    <output class="output">
+        <code>
+            <script>
+                let obj = 
+                {
+                    name: "Ariel",
+                    age: 22,
+                    gender: "Male"
+                };
+                document.write(obj.name);
+            </script>
+        </code>
+    </output>
+
+    <p class="note">Reading a property that doesn't exist will return <code>undefined</code>.</p>
+    <p>A new value to a property can be assigned using the = operator. If the property doesn't exists, then the property
+        will be created and assiged the value.</p>
+    </p>
+    <div class="code">
+        <pre>
+            document.write(obj.name);
+            obj.name = "Mark";
+            document.write(obj.name);
+            document.write(obj.complexion);
+            obj.complexion = "fair";
+            document.write(obj.complexion);
+        </pre>
+    </div>
+    <output class="output">
+        <code>
+            <script>
+                document.write(obj.name);
+                document.write("<br>");
+                obj.name = "Mark";
+                document.write(obj.name);
+                document.write("<br>");
+                document.write(obj.complexion);
+                document.write("<br>");
+                obj.complexion = "fair";
+                document.write(obj.complexion);
+            </script>
+        </code>
+    </output>
+
+    <p>The <code>delete</code> operator deletes the property of an object.</p>
+    <div class="code">
+        <pre>
+            document.write(obj.complexion);
+            delete obj.complexion;
+            document.write(obj.complexion);
+        </pre>
+    </div>
+    <output class="output">
+        <code>
+            <script>
+                document.write(obj.complexion);
+                delete obj.complexion;
+                document.write("<br>");
+                document.write(obj.complexion);
+            </script>
+        </code>
+    </output>
+    <p class="note">The <code>delete</code> operator just severe the connection between the object and the 'deleted' value.</p>
+    
+    <p>The <code>in</code> operator returns true if the value is in a string or a list value.</p>
+    <div class="code">
+        <pre>
+            let str = "Hello";
+            document.write("name" in str);
+        </pre>
+    </div>
+    <output class="output">
+        <code>
+            <script>
+                let listing = [23,23,523,3,2];
+                document.write("length" in listing);
+                document.write("<br>");
+                document.write("name" in listing);
+            </script>
+        </code>
+    </output>
+
+    <p>The <code>Object.assign()</code> function copies all the properties to an object.</p>
+
+    <div class="code">
+        <pre>
+            Object.assign(listing, {name: "listing", purpose: "learning"});
+            document.write(listing.name);
+            document.write(listing.purpose);
+        </pre>
+    </div>
+    <output class="output">
+        <code>
+            <script>
+                Object.assign(listing, {name: "listing", purpose: "learning"});
+                document.write(listing.name);
+                document.write("<br>");
+                document.write(listing.purpose);
+            </script>
+        </code>
+    </output>
+
+    <h2>Mutability</h2>
+    <ul>
+        <li>Immutable - values cannot be changed (numbers, strings, and Booleans).</li>
+        <li>Mutable - values can be changed (objects).</li>
+    </ul>
+</body>
+</html>
