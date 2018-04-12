@@ -504,5 +504,135 @@
         <li>Immutable - values cannot be changed (numbers, strings, and Booleans).</li>
         <li>Mutable - values can be changed (objects).</li>
     </ul>
+
+    <h2>The Math Object</h2>
+    <p><code>Math</code> is a grab-bag of number-related utility functions.</p>
+    <p>The Math object is used as a container to group a bunch of related functionality.
+            There is only one Math object, and it is almost never useful as a value.
+            Rather, it provides a namespace so that all these functions and values do not
+            have to be global bindings.</p>
+
+    <p class="note">Many languages will stop you, or at least warn you, when you are defining
+            a binding with a name that is already taken. JavaScript does this for bindings
+            you declared with let or const but—perversely—not for standard bindings,
+            nor for bindings declared with var or function.</p>
+
+    <ul>
+        <li><code>Math.sin</code></li>
+        <li><code>Math.cos</code></li>
+        <li><code>Math.tan</code></li>
+        <li><code>Math.acos</code></li>
+        <li><code>Math.asin</code></li>
+        <li><code>Math.atan</code></li>
+        <li><code>Math.PI</code></li>
+        <li><code>Math.random
+            <p class="function">This returns a new pseudorandom number between zero(inclusive) and one (exclusive) every call.</p>
+        </code></li>
+        <li><code>Math.floor
+            <p class="function">This rounds down the number to the nearest whole number.</p>
+        </code></li>
+        <li><code>Math.abs</code></li>
+        <li><code>Math.round</code></li>
+    </ul>
+    <h2>Destructuring</h2>
+    <p>The elements of an array can be given a name like variables with let, const, and var.</p>
+    <p>One might do this:</p>
+    <div class="code">
+        <pre>
+            let lib = [1,2,3,4,5];
+            let section1 = lib[0];
+            let section2 = lib[1];
+            //etc.
+        </pre>
+    </div>
+    <output class="output">
+        <code>
+            <script>
+                let lib = [1,2,3,4,5];
+                let section1 = lib[0];
+                let section2 = lib[1];
+                //etc.
+            </script>
+        </code>
+    </output>
+    <p>There is a simpler way of doing it.</p>
+    <ol>
+        <li>When used in a function that accepts an array, the elements of the array can be 'looked' inside.
+            <div class="code">
+                <pre>
+                    function library([sec1, sec2, sec3])
+                    {
+                        document.write(sec1);
+                        document.write(sec2);
+                        document.write(sec3);
+                    }
+
+                    let sections = ["ab", "css", "gh"];
+                    library(sections);
+                </pre>
+            </div>
+            <output class="output">
+                <code>
+                    <script>
+                        function library([sec1, sec2, sec3])
+                        {
+                            document.write(sec1);
+                            document.write("<br>");
+                            document.write(sec2);
+                            document.write("<br>");
+                            document.write(sec3);
+                        }
+
+                        let sections = ["ab", "css", "gh"];
+                        library(sections);
+                    </script>
+                </code>
+            </output>
+        </li>
+        <li>For 'looking' inside objects:
+            <div class="code">
+                <pre>
+                    let obj2 = {name: "Ariel", age: 22, address: "PH"};
+                    let {name} = obj2;
+                    document.write(name);
+                </pre>
+            </div>
+            <output class="output">
+                <code>
+                    <script>
+                        let obj2 = {name: "Ariel", age: 22, address: "PH"};
+                        let {name} = obj2;
+                        document.write(name);
+                    </script>
+                </code>
+            </output>
+        </li>
+    </ol>
+
+    <p class="note">Note that if you try to destructure null or undefined, you get an error, much
+            like you would if you’d directly try to access a property of those values.</p>
+
+    <h2>JSON</h2>
+    <p><i>Serializing</i> the data means it is converted to a flat description.</p>
+    <p><abbr title="JavaScript Object Notation">JSON</abbr> is a widely used data storage and communication format in the Web.</p>
+    <p>Rules of JSON:</p>
+    <ul>
+        <li>All property names have to be surrounded by double quotes.</li>
+        <li>Only simple data expressions are allowed—no function calls, bindings, or
+                anything that involves actual computation.</li>
+        <li>Comments are not allowed in JSON</li>
+    </ul>
+
+    <p>An example of a JSON data:</p>
+    <div class="code">
+        <pre>
+            {
+                "name": "Ariel",
+                "age": 22,
+                "address": "PH"
+            }
+        </pre>
+    </div>
+    <p class="note">The JSON format is similar to the object format of JavaScript but with the keys being wrapped in quotation marks.</p>
 </body>
 </html>
