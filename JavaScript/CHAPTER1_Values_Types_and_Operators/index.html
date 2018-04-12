@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Chapter 1. Values, Types, and Operators</title>
+        <link href="../styles/format.css" rel="stylesheet" type="text/css">
+    </head>
+    <body>
+        <h1>Chapter 1. Values, Types, and Operators</h1>
+
+        <h2>Values</h2>
+        <p>In JavaScript, all chunks of information are called <i>values</i>.</p>
+
+        <h2>Numbers</h2>
+        <p>Values of the number type are numeric Values</p>
+        <div class="code">
+            <code>13 //calculations for integers are precise</code>
+            <br>
+            <code>9.81 //calculations for fractional numbers may not be</code>
+            <br>
+            <code>2.223e08</code>
+        </div>
+
+        <h3>Arithmetic</h3>
+        <h4>Operators</h4>
+        <ul>
+            <li>+ - add</li>
+            <li>- - minus</li>
+            <li>* - multiply</li>
+            <li>/ - divide</li>
+            <li>% - modulo</li>
+        </ul>
+
+        <h3>Special Numbers</h3>
+        <ul>
+            <li><code>Infinity, -Infinity</code> - represents positive and negative infinities</li>
+            <li><code>NaN</code> - not a number</li>
+        </ul>
+
+        <h2>Strings</h2>
+        <p>Strings are used to represent texts. They are written by enclosing the contents in quotes.</p>
+        <div class="code">
+            <code>'Down on the Sea'</code>
+            <br>
+            <code>"Lie on the ocean"</code>
+            <br>
+            <code>'Float on the ocean'</code>
+            <br>
+        </div>
+
+        <p>Strings are represented as Unicode in JavaScript.</p>
+        <p>To concatenate strings, use the + operator.</p>
+        <div class="code"><code>"con"+"ca"+"te"+"nate"</code></div>
+        <output class="output">
+            <code>
+                <script>document.write("con"+"ca"+"te"+"nate")</script>
+            </code>
+        </output>
+        <p>A backtick-quoted string can do certain functions: </p>
+        <div class="code"><code>`half of 100 is ${100/2}`</code></div>
+        <output class="output">
+            <code>
+                <script>document.write(`half of 100 is ${100/2}`)</script>
+            </code>
+        </output>
+
+        <h2>Unary and Binary Operators</h2>
+        <p><code>typeof</code> operator gives the type of the value</p>
+        <p>Unary operators are operators that only take one operand.</p>
+        <p>Binary operators are operators that take two operands.</p>
+
+        <h2>Boolean Values</h2>
+        <ul>
+            <li>false</li>
+            <li>true</li>
+        </ul>
+
+        <p class="note">JavaScript goes over the Unicode from smallest to the largest or from left to right.</p>
+        <p class="note">When evaluating a string with > or <, it is evaluated from left to right.</p>
+        <p class="note">There is only one value in JavaScript that is not equal to itself: Nan (not a number)</p>
+
+        <h3>Relational Operators</h3>
+        <ul>
+            <li>==</li>
+            <li>===</li>
+            <li>!=</li>
+            <li>!==</li>
+            <li>></li>
+            <li><</li>
+            <li>>=</li>
+            <li><=</li>
+        </ul>
+
+        <h3>Logical Operators</h3>
+        <ul>
+            <li>AND - &&</li>
+            <li>OR - ||</li>
+            <li>NOT - !</li>
+            <li>Ternary Operator <p>expression? value1: value2</p></li>
+        </ul>
+
+        <h2>Empty Values</h2>
+        <ul>
+            <li><code>null</code></li>
+            <li><code>undefined</code></li>
+        </ul>
+       
+        <h2>Automatic Type Conversion</h2>
+        <p>When an operator is applied to the “wrong” type of value, JavaScript will
+                quietly convert that value to the type it needs, using a set of rules that often
+                aren’t what you want or expect. This is called <i>type coercion</i>.</p>
+
+        <p class="note">Further
+                arithmetic operations on NaN keep producing NaN, so if you find yourself getting
+                one of those in an unexpected place, look for accidental type conversions.</p>
+        <p class="note">The === and !== differs from == and != in which the operands are not type converted.</p>
+
+        <h3>Short-circuiting of Logical Operations</h3>
+        <p>The || operator (OR) converts the left hand side to Boolean value. If it is true, then it will return it. Otherwise, it will return the right hand side.</p>
+        <p class="note">The || operator can be used for default values.</p>
+        <div class="code">null || "Ariel"</div>
+        <output class="output">
+            <code>
+                <script>document.write(null || "Ariel")</script>
+            </code>
+        </output>
+
+        <p>The && operator (AND) works the other way around. If the left hand side is evaluated to false, then it will be returned. Otherwise, the value of the right hand side.</p>
+        <div class="code">null && "Ariel"</div>
+        <output class="output">
+            <code>
+                <script>document.write(null && "Ariel")</script>
+            </code>
+        </output>
+            
+
+    </body>
+</html>

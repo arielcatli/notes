@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Chapter 2. Program Structure</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" media="screen" href="../styles/format.css" />
+    <script src="main.js"></script>
+</head>
+<body>
+    <h1>Chapter 2. Program Structure</h1>
+    <h2>Expression</h2>
+    <p>A fragment of code that produces a value is called an <i>expression</i>.</p>
+    <h2>Statement</h2>
+    <p>A statement is a complete command in JavaScript.</p>
+    <h2>Program</h2>
+    <p>A program is a list of statements.</p>
+    <p>When a statement changes something in the environment of the program, that is called <i>side-effect</i>.</p>
+
+    <h2>Bindings</h2>
+    <p>A variable that holds values is also called <i>binding</i>.</p>
+    <h3>Declaration/Binding</h3>
+    <div class="code">let caught = 5*5;</div>
+    <div class="function">The <code>let</code> keyword instructs the program to bind the variable name to the value using the = operator.</div>
+    <div class="function">The <code>var</code> and <code>const</code> are also binding operators.</div>
+    <h2>Binding Rules</h2>
+    <ol>
+        <li>The variable name must start with a non-digit character.</li>
+        <li>The variable name can only contain the special characters $ and _.</li>
+        <li>No other special characters should be included and the variable name must not be a keyword.</li>
+    </ol>
+
+    <h2>Environment</h2>
+    <p>The collection of bindings and their values that exists at a given time is called an <i>environment</i>.</p>
+    <p class="note">When a program starts, the environment is not empty. It always contains bindings that are part of the language standard.</p>
+
+    <h2>Functions</h2>
+    <p>Values can have <i>function</i> as their type.</p>
+    <p>A function is a piece of program wrapped in a value.</p>
+    <p>When invoking a function, it can have <i>arguments</i> which are data to be used by the function.</p>
+
+    <h3>The console.log Function</h3>
+    <div class="function">The console.log function is used to output some value to the console. Format: console.log(value);</div>
+    <p>Functions can return values.</p>
+
+    <h2>Control Flow</h2>
+    <p>A JavaScript program has a straight-line control flow.</p>
+
+    <h2>Conditional Execution</h2>
+    <p>A JavaScript program can have multiple branches of execution.</p>
+    <div class="code">
+        <pre>
+            if(condition)
+            {
+                //do something here if condition is true
+            }
+            else
+            {
+                //do something here if condition is false
+            }
+        </pre>
+    </div>
+
+    <h2>Loops</h2>
+    <h3>While and Do-While Loops</h1>
+    <p>A JavaScript program can loop with definite or indefinite times.</p>
+    <div class="code">
+        <pre>
+            while(condition)
+            {
+                //do something while condition is true
+            }
+        </pre>
+
+        <pre>
+            do
+            {
+                //do this while condition is true
+            }
+            while(condition);
+        </pre>
+    </div>
+
+    <h3>For Loops</h3>
+    <div class="code">
+        <pre>
+            for(initializer; condition; update)
+            {
+                //do something here
+            }
+        </pre>
+    </div>
+
+    <h3>Breaking Out of Loops</h3>
+    <div class="function">The break; statement breaks out the first loop where it is contained.</div>
+    <div class="function">The continue; statement just continue to the start of the loop again.</div>
+
+    <h2>Switch Case</h2>
+    <div class="code">
+        <pre>
+            switch(variable)
+            {
+                case case1:
+                    //do something here
+                    break;
+                case case2:
+                    //do something else here
+                    break;
+                    .
+                    .
+                    .
+                default:
+                    //do the default behavior here
+                    break;
+            }
+        </pre>
+    </div>
+
+    <h2>Comments</h2>
+    <p>Inline comment: //</p>
+    <p>Block comment: /* */</p>
+
+
+</body>
+</html>

@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Chapter 3. Functions
+    </title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" media="screen" href="../styles/format.css" />
+    <script src="main.js"></script>
+</head>
+<body>
+    <h1>Chapter 3. Functions</h1>
+
+    <h2>Defining a Function</h2>
+    <p>A function definition is a regular binding where the value of the binding is a function.</p>
+    <div class="code">
+        <pre>
+            const square = function(x)
+            {
+                return x*x;
+            };
+
+            document.write(square(12));
+        </pre>
+    </div>
+
+    <output class="output">
+        <code>
+            <script>
+                let square = function(x)
+                {
+                    return x*x;
+                };
+
+                document.write(square(12));
+            </script>
+        </code>
+    </output>
+    
+    <div class="function">The format of a function is <pre>
+        function(parameter)
+        {
+            //body of the function
+            //do something here
+            [return something;]
+        }
+    </pre></div>
+
+    <h2>Parameters and Scopes</h2>
+    <p>Parameters to a function behave like regular bindings, but their initial values
+            are given by the caller of the function, not the code in the function itself.</p>
+    
+    <p>Scope is the part of the program in which the binding is visible.</p>
+    <p>For bindings which scope is the whole program, they are called <i>global</i>.</p>
+    <p>But bindings created for function parameters or declared inside a function
+            can only be referenced in that function. These are called <i>local</i>.</p>
+    
+    <p class="note">Bindings declared with let and const are in fact local to the block that they
+            are declared in</p>
+    <p class="note">When a block has its own binding which has the same name as the outer scope, then the
+        block will use its own binding and not the outer binding.
+    </p>
+
+    <div class="code">
+        <pre>
+            let a = 3.14;
+
+            let a_function = function()
+            {
+                a = 2;
+                return a;
+            }
+
+            document.write(a_function());
+        </pre>
+    </div>
+
+    <output class="output">
+        <code>
+            <script>
+                    let a = 3.14;
+
+                    let a_function = function()
+                    {
+                        a = 2;
+                        return a;
+                    }
+
+                    document.write(a_function());
+            </script>
+        </code>
+    </output>
+
+    <h2>Nested Scope</h2>
+    <p>Blocks and functions can be created inside other blocks and functions, producing multiple
+            degrees of locality.</p>
+
+    <div class="code">
+        <pre>
+                const hummus = function(factor) 
+                {
+                    const ingredient = function(amount, unit, name)
+                    {
+                        let ingredientAmount = amount * factor;
+                        if (ingredientAmount > 1)
+                        {
+                            unit += "s";
+                        }
+                        console.log(`${ingredientAmount} ${unit} ${name}`);
+                    };
+
+                    ingredient(1, "can", "chickpeas");
+                    ingredient(0.25, "cup", "tahini");
+                    ingredient(0.25, "cup", "lemon juice");
+                    ingredient(1, "clove", "garlic");
+                    ingredient(2, "tablespoon", "olive oil");
+                    ingredient(0.5, "teaspoon", "cumin");
+                };
+        </pre>
+    </div>
+    <p>The ability to see outside the scope is called <i>lexical scoping</i>.</p>
+
+    <h2>Function as Values</h2>
+    <p>Function bindings can be reassigned to another functions as well as function can be passed as values.</p>
+
+    <div class="code">
+        <pre>
+            let launchMissiles = function() 
+            {
+                missileSystem.launch("now");
+            };
+                
+            if (safeMode)
+            {
+                launchMissiles = function() {/* do nothing */};
+            }
+            </pre>
+    </div>
+
+    <h2>Declaration Notation</h2>
+    <p>There is a shorter way to create a function binding.</p>
+    <div class="code">
+        <pre>
+            function function_name(function_parameter_list)
+            {
+                //do something here
+                [return something;]
+            }
+        </pre>
+    </div>
+
+    <p class="note">Function declarations are not part of the regular top-to-bottom flow
+            of control. They are conceptually moved to the top of their scope and can be
+            used by all the code in that scope.</p>
+
+    <h2>Arrow Function Notation</h2>
+    <p>There is another way of declaring a function without a function name.</p>
+    <ol>
+        <li>The arrow comes after the list of parameters, and is followed by the function’s
+                body. It expresses something like “this input (the parameters) produces this
+                result (the body)”.
+            <div class="code">
+                <pre>
+                    const function_name = (parameter_list) =>
+                    {
+                        //body
+                    }
+                </pre>
+            </div></li>
+        <li>When there is only one parameter name, the parentheses around the parameter
+                list can be omitted.
+            <div class="code">
+                <pre>
+                    const function_name = (arg1) =>
+                    {
+                        //body
+                    }
+
+                    //This is possible:
+
+                    const function_name = arg1 =>
+                    {
+                        //body
+                    }
+                </pre>
+            </div></li>
+        <li>If the body is a single expression, rather than a block
+                in braces, that expression will be returned from the function.
+            <div class="code">
+                <pre>
+                    const function_name = (parameter_list) =>
+                    {
+                        return something;
+                    }
+
+                    //This could be:
+
+                    const function_name = (parameter_list) => something;
+                </pre>
+            </div></li>
+        <li>When an arrow function has no parameters at all, its parameter list is just
+                an empty set of parentheses.
+            <div class="code">
+                <pre>
+                    const function_name = () =>
+                    {
+                        //body
+                    }
+                </pre>
+            </div></li>
+    </ol>
+
+    <h2>Call Stack</h2>
+    <p>When functions are called inside another functions, then the calling function block's state will be preserved until the program returns to it.</p>
+
+    <h2>Optional Arguments</h2>
+    <p>When a function is passed with more arguments than expected, the excess arguments will be disregarded.</p>
+    <div class="code">
+        <pre>
+            let cube = function(x)
+            {
+                return square(x)*x;
+            }
+            
+            document.write(square(2,3,4));
+        </pre>
+    </div>
+
+    <output class="output">
+        <code>
+            <script>
+            let cube = function(x)
+            {
+                return square(x)*x;
+            }
+            
+            document.write(cube(2,3,4));
+            </script>
+        </code>
+    </output>
+
+    <p>A default value to a parameter could be given upon call of the function</p>
+
+    <div class="code">
+        <pre>
+            function makePerson(name, age, gender="n/a")
+            {
+                document.write(name);
+                document.write(age);
+                document.write(gender);
+            }
+
+            makePerson("Ariel", 22, "male");
+            makePerson("Maria", 21);
+        </pre>
+    </div>
+    <output class="output">
+        <code>
+            <script>
+                function makePerson(name, age, gender="n/a")
+                {
+                    document.writeln(name);
+                    document.writeln(age);
+                    document.writeln(gender);
+                }
+
+                makePerson("Ariel", 22, "male");
+                makePerson("Maria", 21);    
+            </script>
+        </code>
+    </output>
+
+    <h2>Closure</h2>
+    <p>To still access a local binding after a function gets out of scope, return the binding with a function.</p>
+    <div class="code">
+        <pre>
+            function multiplier(x)
+            {
+                return function(y)
+                {
+                    return x*y;
+                }
+            }
+
+            let multiply = multiplier(2);
+            document.write(multiply(3));
+        </pre>
+    </div>
+    <output class="output">
+        <code>
+            <script>
+                function multiplier(x)
+                {
+                    return function(y)
+                    {
+                        return x*y;
+                    }
+                }
+
+                let multiply = multiplier(2);
+                document.write(multiply(3));
+            </script>
+        </code>
+    </output>
+    <p>This process is called <i>closure</i>.</p>
+
+    <h2>Recursion</h2>
+    <p>The process of <i>recursion</i> happens when a function is called inside itself.</p>
+
+    <h2>Function and Side Effects</h2>
+    <ol>
+        <li>Functions that are called for their side effects</li>
+        <li>Functions that are called for their return values</li>
+    </ol>
+    <p>A pure function is a specific kind of value-producing function that not only
+            has no side effects but also doesn’t rely on side effects from other code—for
+            example, it doesn’t read global bindings whose value might change. A pure
+            function has the pleasant property that, when called with the same arguments,
+            it always produces the same value (and doesn’t do anything else).</p>
+</body>
+</html>

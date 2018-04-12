@@ -1,0 +1,70 @@
+html, body
+{
+    margin: 0px;
+    padding: 0px;
+    font-family: Helvetica;
+    box-sizing: border-box;
+}
+
+.note
+{
+    margin: 5px;
+    border: 3px solid greenyellow;
+    padding: 10px;
+    background-color: greenyellow;
+}
+
+h1, h2, h3, h4
+{
+    margin: 5px;
+    padding: 10px;
+}
+
+h1
+{
+    text-transform: uppercase;
+    text-align: center;
+    background-color: black;
+    padding: 20px;
+    margin: 0px;
+    color: white;
+}
+
+h2
+{
+    border: 3px solid black;
+    color: white;
+    background-color: black;
+    display: block;
+}
+
+p
+{
+    margin: 5px;
+    padding: 10px;
+}
+
+.code
+{
+    border: 3px solid #d8d2d2;
+    background-color: #d8d2d2;
+    margin: 5px;
+    padding: 10px;
+    font-family: 'Courier New', Courier, monospace;
+}
+
+output.output
+{
+    margin: 5px;
+    padding: 10px;
+    border: 3px solid #a7a5a5;
+    background-color: #a7a5a5;
+    display: inline-block;
+}
+
+.function
+{
+    color: blue;
+    margin: 5px;
+    padding: 10px;
+}
