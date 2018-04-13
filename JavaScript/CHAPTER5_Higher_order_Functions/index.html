@@ -369,5 +369,17 @@
         </code>
     </output>
     <p class="note">The <code>reduce()</code> method accepts a second argument which is the starting accumulated value.</p>
+
+    <h2>Strings and Character Codes</h2>
+    <p>JavaScript strings are encoded as a sequence
+        of 16-bit numbers. These are called <i>code units</i>.</p>
+    <p>UTF-16, the format used by JavaScript strings, was invented.
+        It describes most common characters using a single 16-bit code unit, but uses
+        a pair of two such units for others.</p>
+
+    <p class="function">The <code>charCodeAt()</code> method gives the code unit of the character.</p>
+    <p class="function">The <code>codePointAt()</code> method gives the full UTF-16 representation of the character.</p>
+    <p class="function">The <code>findIndex()</code> array method takes in a function in which an element will be passed to it and the function evaluate if it is true.
+    The first occurence of a true evaluation will be returned.</p>
 </body>
 </html>

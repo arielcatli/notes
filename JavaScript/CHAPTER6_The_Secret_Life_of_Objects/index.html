@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Chapter 6. The Secret Life of Objects</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" media="screen" href="../styles/format.css" />
+    <script src="main.js"></script>
+</head>
+<body>
+    <h1>Chapter 6. The Secret Life of Objects</h1>
+    <p><i>Object-oriented Programming</i>, a set of techniques that uses objects
+        (and related concepts) as the central principle of program organization.</p>
+    
+    <h2>Encapsulation</h2>
+
+    <p><i>Encapsulation</i> is the process of separating the interface from the implementation.</p>
+
+    <p>Different pieces of  a program interact with each other through <i>interfaces</i>,
+        limited sets of functions or bindings that provide useful functionality at
+        a more abstract level, hiding its precise implementation.</p>
+
+    <p>Such program pieces are modeled using objects.</p>
+    <p>Their interface consists of a
+        specific set of methods and properties. Properties that are part of the interface
+        are called <i><b>public</b></i>. The others, that outside code should not be touching, are
+        called <i><b>private</b></i>.</p>
+
+    <p class="note">JavaScript does not have a way to determine if the code is public or private.</p>
+    <p class="note">It is also common to put an underscore (_) character at the start of property names to indicate that those
+        properties are private.</p>
+
+    <h2>Methods</h2>
+    <p>Methods are properties that hold function values.</p>
+    <div class="code">
+        <pre>
+            let person = {};
+            person._name = "Ariel";
+            person.getName = function() {return this._name};
+            document.write(person.getName());
+        </pre>
+    </div>
+    <output class="output">
+        <code>
+            <script>
+                let person = {};
+                person._name = "Ariel";
+                person.getName = function() {return this._name};
+                document.write(person.getName());
+            </script>
+        </code>
+    </output>
+    <p class="note">The normal function notation with <code>return</code> and set by the <code>function</code> keyword automatically binds the <code>this</code> value to the
+    surrounding object, while the arrow-function notation sees the <code>this</code> of the scope around them.</p>
+
+    <div class="code">
+        <pre>
+            let student = {};
+            student._name = "Ariel";
+            student._getName = () => this._name;
+            document.write(student._getName());
+        </pre>
+    </div>
+    <output class="output">
+        <code>
+            <script>
+                let student = {};
+                student._name = "Ariel";
+                student._getName = () => this._name;
+                document.write(student._getName());
+            </script>
+        </code>
+    </output>
+
+    <p>The <code>this</code> of the arrow-function notation method is the surrounding scope.</p>
+    <p class="note">Use arrow-function notation with <code>call()</code> function to set the context.</p>
+
+    <div class="code">
+        <pre>
+            function normalize()
+            {
+                document.write(this.coords.map(n => n / this.length));
+            }
+            normalize.call({coords: [0,2,3], length: 5});
+        </pre>
+    </div>
+    <output class="output">
+        <code>
+            <script>
+                function normalize()
+                {
+                    document.write(this.coords.map(n => n / this.length));
+                }
+                normalize.call({coords: [0,2,3], length: 5});
+            </script>
+        </code>
+    </output>
+
+    <div class="code">
+        <pre>
+            function normalize()
+            {
+                document.write(this.coords.map(function(n){return n/this.length}));
+            }
+            normalize.call({coords: [0,2,3], length: 5});
+        </pre>
+    </div>
+    <output class="output">
+        <code>
+            <script>
+                function normalize()
+                {
+                    document.write(this.coords.map(function(n){return n/this.length}));
+                }
+                normalize.call({coords: [0,2,3], length: 5});
+            </script>
+        </code>
+    </output>
+
+    <p>The <code>person.getName()</code> is a method of <code>person</code> object.</p>
+    <p class="note">Usually a method needs to do something with the object it was called on.</p>
+    <p class="function">The binding called <code>this</code> in its body automatically
+        points at the object that it was called on.</p>
+    <p class="note">The <code>this</code> binding points to the current object that calls the function.</p>
+    <p class="function">To call the function in a different <i>context</i> (object), use the <code>call()</code> property of the function.
+    The first argument is the context (object) to be pointed by this, and the next are the arguments to the function.</p>
+
+    <div class="code">
+        <pre>
+            function speak(message)
+            {
+                document.write("The " + this._name + " says \'" + message + "\'.");
+            }
+
+            let dog = {_name: "dog"};
+            let cat = {_name: "cat"};
+
+            speak.call(dog, "arf!");
+            speak.call(cat, "meow...");
+        </pre>
+    </div>
+    <output class="output">
+        <code>
+            <script>
+                function speak(message)
+                {
+                    document.write("The " + this._name + " says \'" + message + "\'.");
+                }
+
+                let dog = {_name: "dog"};
+                let cat = {_name: "cat"};
+
+                speak.call(dog, "arf!");
+                document.write("<br>"); 
+                speak.call(cat, "meow...");
+            </script>
+        </code>
+    </output>
+
+    <p>Each function has its own <code>this</code> binding, whose value depends on the
+            way it is called. You cannot refer to the <code>this</code> of the wrapping scope in a regular
+            function defined with the <code>function</code> keyword.</p>
+
+    <p class="note">Arrow functions are different—they do not bind their own <code>this</code>, but can see
+            the <code>this</code> binding of the scope around them.</p>
+    
+
+    <h2>Prototypes</h2>
+    <p>In addition to their set of properties, most objects
+            also have a prototype.</p>
+    
+    <p>A <i>prototype</i> is another object that is used as a fallback
+        source of properties. When an object gets a request for a property that it does
+        not have, its prototype will be searched for the property, then the prototype’s
+        prototype, and so on.</p>
+
+    <p class="function">The great ancestral prototype is the <code>Object.prototype</code>.</p>
+
+    <div class="code">
+        <pre>
+            document.write(Object.getPrototypeOf({}) == Object.prototype);
+            document.write(Objec.getPrototypeOf(Object.prototype));
+        </pre>
+    </div>
+    <output class="output">
+        <code>
+            <script>
+                document.write(Object.getPrototypeOf({}) == Object.prototype);
+                document.write("<br>");
+                document.write(Object.getPrototypeOf(Object.prototype));
+            </script>
+        </code>
+    </output>
+    <p class="function">The <code>Object.getPrototypeOf()</code> function returns the prototype of its argument (a function).</p>
+    <p class="note">The prototype relations of JavaScript objects form a tree-shaped structure,
+            and at the root of this structure sits Object.prototype.</p>
+    
+
+    <p class="function">The <code>toString()</code> function is also found in the <code>Object.prototype</code> and are inherited by most of the objects.
+    It returns a string representation of the object.</p>
+
+    <p class="note">Function prototypes derive from the <code>Function.prototype</code> and array prototypes derive from <code>Array.prototype</code>.</p>
+    <p class="note">Such a prototype object will itself have a prototype, often Object.prototype,
+            so that it still indirectly provides methods like toString.</p>
+    
+    <h3>Creating an Object with a Specific Prototype</h3>
+    <p class="function">The <code>Object.create()</code> function creates a new object with a specific prototype.</p>
+
+    <div class="code">
+        <pre>
+            let protoRabbit =
+            {
+                speak(message)
+                {
+                    document.write(`The ${this.type} speaks '${message}'`);
+                }
+            };
+
+            let killerRabbit = Object.create(protoRabbit);
+            killerRabbit.type = "killer rabbit";
+            killerRabbit.speak("RAAAWWWR!");
+            document.write(Object.getPrototypeOf(killerRabbit).speak);
+        </pre>
+    </div>
+    <output class="output">
+        <code>
+            <script>
+                let protoRabbit =
+                {
+                    speak(message)
+                    {
+                        document.write(`The ${this.type} speaks '${message}'`);
+                    }
+                };
+
+                let killerRabbit = Object.create(protoRabbit);
+                killerRabbit.type = "killer rabbit";
+                killerRabbit.speak("RAAAWWWR!");
+                document.write("<br>");
+                document.write(Object.getPrototypeOf(killerRabbit).speak);
+            </script>
+        </code>
+    </output>
+    <p class="note">The format of the <code>speak()</code> method is an object shorthand declaration.
+    The function keyword can be omitted as well as the property name. The property name will be the name of
+    the function by default.</p>
+
+    <h2>Classes</h2>
+    <p>JavaScript’s prototype system can be interpreted as a somewhat informal take
+            on an object-oriented concept called <i>classes</i>.</p>
+
+    <p>A <i>class</i> defines the shape of a
+            type of object—what methods and properties it has.</p>
+
+    <p>Such an object is called
+            an <i>instance</i> of the class.</p>
+    
+    <p>So in order to create an instance of a given class, you have to make an object
+            that derives from the proper prototype, but you also have to make sure it,
+            itself, has the properties that instances of this class are supposed to have. This
+            is what a <i>constructor function</i> does.</p>
+
+    <p class="note">Technically, the constructor function makes sure the new instance has the prototype and other properties needed. Remember
+        that the prototype's properties will be inherited. The constructor function makes sure that the instance will also have other properties unique to it.
+    </p>
+
+    <div class="code">
+        <pre>
+            function makeRabbit(type)
+            {
+                let rabbit = Object.create(protoRabbit);
+                rabbit.type = type;
+                return rabbit;
+            }
+
+            makeRabbit("good rabbit").speak("hmmmmmmm...");
+        </pre>
+    </div>
+    <output class="output">
+        <code>
+            <script>
+                function makeRabbit(type)
+                {
+                    let rabbit = Object.create(protoRabbit);
+                    rabbit.type = type;
+                    return rabbit;
+                }
+
+                makeRabbit("good rabbit").speak("hmmmmmmm...");
+            </script>
+        </code>
+    </output>
+
+    <p class="note">Just remember that to create an instance, a constructor function must be created.
+        To create templates (class), a prototype should be designed and assigned with <code>Object.create()</code>.
+    </p>
+</body>
+</html>
