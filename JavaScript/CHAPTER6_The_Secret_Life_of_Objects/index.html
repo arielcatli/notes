@@ -295,5 +295,353 @@
     <p class="note">Just remember that to create an instance, a constructor function must be created.
         To create templates (class), a prototype should be designed and assigned with <code>Object.create()</code>.
     </p>
+
+    <h2>The <code>new</code> Operator</h2>
+    <p>A shorthand way of creating an instance from a construction function is the use of the <code>new</code> operator.</p>
+    <div class="code">
+        <pre>
+            function Person(type)
+            {
+                this._type = type;
+            }
+
+            Person.prototype.getType = function() {return this._type};
+            let student_1 = new Person("Student");
+            document.write(student_1.getType());
+        </pre>
+    </div>
+    <output class="output">
+        <code>
+            <script>
+                function Person(type)
+                {
+                    this._type = type;
+                }
+
+                Person.prototype.getType = function() {return this._type};
+                let student_1 = new Person("Student");
+                document.write(student_1.getType());
+            </script>
+        </code>
+    </output>
+
+    <p class="note">Note that the prototype contents cannot be declared inside the constructor function. Add the prototypes after the constructor function declaration.</p>
+    <p class="note">Constructors (all functions, in fact) automatically get a property named
+        <code>prototype</code>, which by default holds a plain, empty object that derives from
+        <code>Object.prototype</code>. You can overwrite it with a new object if you want.
+        This is why the <code>speak()</code> method was just added after the constructor function.</p>
+
+    <p class="note">If the methods are declared inside the constructor function, then the <code>this</code> binding
+    value is the this of the constructor function, which means it is only <i>local</i> to the function and not the object instance.</code></p>
+
+    <p class="note">Objects coming from the same constructor point to one common prototype object. An example is that all instances of
+        the <code>Person</code> will have access to the same method. If the method is declared inside the constructor function,
+        it will be redeclared for every instantiation which could affect memory usage.
+    </p>
+
+    <p class="note">A good note is that when a method needs to manipulate and use the local variables, declare it in the constructor function.</p>
+    <p class="note">By convention, the names of constructors are capitalized so that they can
+        easily be distinguished from other functions.</p>
+    
+    <p class="note">The actual prototype of a constructor is <code>Function.prototype</code> since constructors
+        are functions. Its <code>prototype</code> property holds the prototype used for instances
+        created through it.</p>
+
+    <h2>Class Notation</h2>
+    <p>So JavaScript classes are constructor functions with a prototype property. That
+        is how they work, and until 2015, that was how you had to write them.</p>
+    <p class="function">Another way of declaring them (less awkward) is the use of the <i>class notation</i>.</p>
+
+    <div class="code">
+        <pre>
+            class Animal
+            {
+                constructor(type, name)
+                {
+                    this._type = type;
+                    this._name = name;
+                }
+
+                speak(line)
+                {
+                    document.write("The " + this._name + " is a " + this._type + ". It says, \'"+ line + "\'");
+                }
+            }
+
+            let bird = new Animal("bird", "Tweety");
+            let bat = new Animal("mammal", "Lolong");
+            bird.speak("tweet!");
+            document.write("<br>");
+            bat.speak("scrreeeech!");
+        </pre>
+    </div>
+    <output class="output">
+        <code>
+            <script>
+                class Animal
+                {
+                    constructor(type, name)
+                    {
+                        this._type = type;
+                        this._name = name;
+                    }
+
+                    speak(line)
+                    {
+                        document.write("The " + this._name + " is a " + this._type + ". It says, \'"+ line + "\'");
+                    }
+                }
+
+                let bird = new Animal("bird", "Tweety");
+                let bat = new Animal("mammal", "Lolong");
+                bird.speak("tweet!");
+                document.write("<br>");
+                bat.speak("scrreeeech!");
+            </script>
+        </code>
+    </output>
+    <p class="function">This is similar to how other languages declare a class. The <code>constructor</code> function is
+    the constructor function of the class.</p>
+
+    <p class="note">Any number of methods can be added in the curly braces of the class. The other functions, aside from the <code>constructor</code>
+    function, are packaged within the prototype.</p>
+
+    <p class="note">Class declarations only allow methods—properties that hold functions—to
+        be added to the prototype. This can be somewhat inconvenient when you want
+        to save a non-function value in there. You can still create such properties by
+        directly manipulating the prototype after you’ve defined the class.</p>
+    
+    <p>Like a function, the <code>class</code> keyword can be used to create an anonymous class.
+    </p>
+
+    <div class="code">
+        <pre>
+            let pencil = new class{ getType(){return "School supply";}};
+            document.write(pencil.getType());
+        </pre>
+    </div>
+    <output class="output">
+        <code>
+            <script>
+                let pencil = new class{ getType(){return "School supply";}};
+                document.write(pencil.getType());
+            </script>
+        </code>
+    </output>
+    
+    <p class="note">When used as an expression, it doesn’t define a binding, but just
+            produces the constructor as a value. You are allowed to omit the class name
+            in a class expression.</p>
+
+    <p>When you add a property to an object, whether it is present in the prototype
+            or not, the property is added to the object itself, which will henceforth have it
+            as its own property. If there is a property by the same name in the prototype,
+            this property will no longer affect the object, as it is now hidden behind the
+            object’s own property.</p>
+    
+    <div class="code">
+        <pre>
+            class SchoolMaterial
+            {
+                constructor(name, quantity)
+                {
+                    this._name = name;
+                    this._type = "school material";
+                    this._quantity = quantity;
+                }
+
+                increase(additional)
+                {
+                    this._quantity += additional;
+                }
+
+                decrease(subtract)
+                {
+                    this._quantity -= subtract;
+                }
+
+                hide()
+                {
+                    document.write("The material is hidden in central storage.");
+                }
+            }
+
+            let paper = new SchoolMaterial("Paper", 250);
+            paper.hide();
+            paper.hide = function() { document.write(`The ${this.name} is hidden in the ${this.name} storage.`);};
+            paper.hide();
+        </pre>
+    </div>
+    <output class="output">
+        <code>
+            <script>
+                class SchoolMaterial
+                {
+                    constructor(name, quantity)
+                    {
+                        this._name = name;
+                        this._type = "school material";
+                        this._quantity = quantity;
+                    }
+
+                    increase(additional)
+                    {
+                        this._quantity += additional;
+                    }
+
+                    decrease(subtract)
+                    {
+                        this._quantity -= subtract;
+                    }
+
+                    hide()
+                    {
+                        document.write("The material is hidden in central storage.");
+                    }
+                }
+
+                let paper = new SchoolMaterial("Paper", 250);
+                paper.hide();
+                document.write("<br>");
+                paper.hide = function() {document.write(`The ${this._name} is hidden in the ${this._name} storage.`);};
+                paper.hide();
+            </script>
+        </code>
+    </output>
+
+    <p>Overriding can be used to express exceptional properties
+            in instances of a more generic class of objects, while letting the nonexceptional
+            objects simply take a standard value from their prototype.
+            It is also used to give the standard function and array prototypes a different
+            toString method than the basic object prototype.</p>
+
+    <div class="code">
+        <pre>
+            document.write(paper.toString());
+            paper.toString = function() {document.write(`NAME: ${this._name} ---> QTY: ${this._quantity}`);};
+            document.write(paper.toString());
+            document.write(paper);
+        </pre>
+    </div>
+    <output class="output">
+        <code>
+            <script>
+                document.write(paper.toString());
+                paper.toString = function() {document.write(`NAME: ${this._name} ---> QTY: ${this._quantity}.`);};
+                document.write("<br>");
+                document.write(paper.toString());
+                document.write("<br>");
+                document.write(paper);
+            </script>
+        </code>
+    </output>
+<p class="note">Calling <code>toString()</code> on an array gives a result similar to calling <code>.join(",")</code> on
+        it—it puts commas between the values in the array. Directly calling <code>Object.prototype.toString()</code> with an array produces a different string. That function
+        doesn’t know about arrays, so it simply puts the word “object” and the name
+        of the type between square brackets.</p>
+
+<h2>Maps</h2>
+<p>A map is a data structure that associates values with other values.</p>
+
+<div class="code">
+    <pre>
+        let ages =
+        {
+            Ariel: 22,
+            Joshua: 23,
+            Patrick: 19
+        }
+
+        document.write(`Is the age of Ariel known? ${"Ariel" in ages}`);
+        document.write(`Is the age of toString known? ${"toString" in ages}`);
+    </pre>
+</div>
+<output class="output">
+    <code>
+        <script>
+            let ages =
+            {
+                Ariel: 22,
+                Joshua: 23,
+                Patrick: 19
+            }
+
+            document.write(`Is the age of Ariel known? ${"Ariel" in ages}`);
+            document.write("<br>");
+            document.write(`Is the age of toString known? ${"toString" in ages}`);
+        </script>
+    </code>
+</output>
+<p>See? The <code>toString()</code> method is visible too when the <code>in</code> operator is used.</p>
+<p class="note">Note that the values (left side of the :) can be not wrapped with quotation marks unlike in objects.</p>
+<p class="note">This is why using objects as maps is dangerous.</p>
+
+<p>There are possible solutions to this.</p>
+<ol>
+    <li>Create objects without a prototype.
+        <p class="function">To create an object without prototype, use the <code>Object.create(null)</code> statement.
+        This creates an object without a prototype.</p>
+        <p class="note">Object property names must be strings.</p>
+    </li>
+    <li>use the <code>Map</code> class provided with JavaScript.
+        <p class="note">Use this when keys to the map can't be easily converted to strings -- such as objects -- an object cannot be used as keys to ordinary objects.</p>
+        <div class="code">
+            <pre>
+                let addresses = new Map();
+                addresses.set("Ariel", "San Luis");
+                addresses.set("Joshua", "Bulacan");
+                addresses.set("Patrick", "Bulacan");
+
+                document.write(addresses.get("Ariel"));
+                document.write(addresses.get("Patrick"));
+                document.write(addresses.has("Joshua"));
+            </pre>
+        </div>
+        <output class="output">
+            <code>
+                <script>
+                    let addresses = new Map();
+                    addresses.set("Ariel", "San Luis");
+                    addresses.set("Joshua", "Bulacan");
+                    addresses.set("Patrick", "Bulacan");
+
+                    document.write(addresses.get("Ariel"));
+                    document.write("<br>");
+                    document.write(addresses.get("Patrick"));
+                    document.write("<br>");
+                    document.write(addresses.has("Joshua"));
+                </script>
+            </code>
+        </output>
+        <p class="function">The <code>map.set("key", "value")</code> adds another entry to the map.</p>
+        <p class="function">The <code>map.get("key")</code> retrieves the value of the key from the map.</p>
+        <p class="function">The <code>map.has("key")</code> checks if there is a key-value pair in the map as stated by the argument.</p>
+    </li>
+</ol>
+
+<p class="note">If you do have a plain object that you need to treat as a map for some reason,
+        it is useful to know that <code>Object.keys</code> only returns an object’s own keys, not
+        those in the prototype.</p>
+<p class="function">The <code>hasOwnProperty()</code> of objects checks the object itself (not the prototype) if it has the property name.</p>
+
+<h2>Polymorphism</h2>
+<p class="note">When you call the String function (which converts a value to a string) on an
+        object, it will call the toString method on that object to try to create a meaningful
+        string from it.</p>
+<p>When a piece of code is written
+        to work with objects that have a certain interface—in this case, a toString
+        method—any kind of object that happens to support this interface can be
+        plugged into the code, and it will just work.</p>
+
+<p>This technique is called <i>polymorphism</i>.</p>
+
+<h2>Symbols</h2>
+<p>The property names can also be non-string. They can be <i>symbols</i>.</p>
+<p class="function">Symbols are created with the <code>Symbol</code> function.</p>
+
+<p class="note">Unlike strings, newly created symbols are
+        unique—you cannot create the same symbol twice.</p>
+
+
 </body>
 </html>
