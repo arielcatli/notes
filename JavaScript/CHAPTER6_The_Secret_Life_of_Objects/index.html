@@ -641,7 +641,545 @@
 
 <p class="note">Unlike strings, newly created symbols are
         unique—you cannot create the same symbol twice.</p>
+<p class="note">Symbols are useful, because they act as unique object keys.</p>
+<p class="note">Properties with a symbol key don’t appear in the JSON representation of your object. Not even the for-in loop or <code>Object.keys</code> can enumerate them</p>
+<p class="note"><code>Object.getOwnPropertySymbols</code> provides a way to retrieve the symbol keys of your objects</p>
+<p class="note">Always provide a description for your symbols, and make your descriptions unique. If you use symbols for accessing private properties, treat their descriptions as if they were variable names.</p>
+
+<div class="code">
+    <pre>
+        let sym = Symbol("a new symbol");
+        let ball = {};
+        ball[sym] = 22;
+        document.write(ball[sym]);
+    </pre>
+</div>
+<output class="output">
+    <code>
+        <script>
+            let sym = Symbol("a new symbol");
+            let ball = {};
+            ball[sym] = 22;
+            document.write(ball[sym]);
+        </script>
+    </code>
+</output>
+<p class="note">A symbol is accessed using [] notation.</p>
+<p>To include the symbol in the object declaration,</p>
+<div class="code">
+    <pre>
+        let diameter = Symbol("Diameter of the cylinder")
+        let getDiameter = Symbol("Get the diameter of the cylinder");
+        cylinder = {[diameter]: 22, [getDiameter](){return this[diameter];}};
+        document.write(cylinder[getDiameter]());
+    </pre>
+</div>
+<output class="output">
+    <code>
+        <script>
+            let diameter = Symbol("Diameter of the cylinder")
+            let getDiameter = Symbol("Get the diameter of the cylinder");
+            cylinder = {[diameter]: 22, [getDiameter](){return this[diameter];}};
+            document.write(cylinder[getDiameter]());
+        </script>
+    </code>
+</output>
+
+<h2>The Iterator Interface</h2>
+<p>The object given to a for/of loop is expected to be <i>iterable</i>.</p>
+<p>This means that it
+        has a method named with the <code>Symbol.iterator</code> symbol (a symbol value defined
+        by the language, stored as a property of the <code>Symbol</code> function).</p>
+<p>When called, that method should return an object that provides a second
+        interface, <i>iterator</i>. This is the actual thing that iterates.</p>
+<p>It has a <code>next</code> method
+        that returns the next result.</p>
+<p>That result should be an object with a <code>value</code>
+        property, providing the <code>next</code> value, and a <code>done</code> property, which should be true
+        when there are no more results and false otherwise.</p>
+
+<p class="note">Note that the next, value, and done property names are plain strings, not
+        symbols.</p>
+
+<div class="code">
+    <pre>
+        object
+        |(has a)
+         --->Symbol.iterator()
+                            |(returns an object)
+                             --->iterator (which actually iterates)
+                                                |(has the methods)
+                                                 --->next (points to the next object)
+                                                |
+                                                 --->value (value of the current object)
+                                                |
+                                                 --->done (indicates when the iteration is done, true if done)
+    </pre>
+</div>
+<div class="code">
+    <pre>
+        let stringIterator = "Hello, World!"[Symbol.iterator]();
+        done = false;
+        while(done != true)
+        {
+            item = stringIterator.next();
+            document.write(item.value);
+            done = item.done;
+        }
+    </pre>
+</div>
+<output class="output">
+    <code>
+        <script>
+            let stringIterator = "Hello, World!"[Symbol.iterator]();
+            done = false;
+            while(done != true)
+            {
+                item = stringIterator.next();
+                document.write(item.value);
+                done = item.done;
+            }
+        </script>
+    </code>
+</output>
+<p>An example of an iterable matrix,</p>
+<div class="code">
+    <pre>
+        class matrix
+        {
+            constructor(width, height, content = (x,y) => undefined)
+            {
+                this.width = width;
+                this.height = height;
+                this.content = [];
+
+                for(let y = 0; y < height; y++)
+                {
+                    for (let x = 0; x < width; x++)
+                    {
+                        this.content[y * width + x] = content(x,y);
+                    }
+                }
+            }
+
+            get(x, y)
+            {
+                return this.content[y * this.width + x];
+            }
+
+            set(x, y, value)
+            {
+                this.content[y * this.width + x] = value;
+            }
+        }
+
+        class MatrixIterator
+        {
+            constructor(matrix)
+            {
+                this.x = 0;
+                this.y = 0;
+                this.matrix = matrix;
+            }
+
+            next()
+            {
+                if(this.y == this.matrix.height)
+                    return {done: true};
+                
+                let value = {x: this.x,
+                             y: this.y,
+                             value = this.matrix.get(this.x, this.y)};
+                
+                this.x++;
+                if(this.x == this.matrix.width)
+                {
+                    this.x = 0;
+                    this.y++;
+                }
+
+                return {value, done:false};
+            }
+        }
+
+        Matrix.prototype[Symbol.iterator] = function()
+        {
+            return new MatrixIterator(this);
+        }
+
+        let matrix = new Matrix(2, 2, (x, y) => `value ${x},${y}`);
+        for (let item of matrix)
+            document.write(item.x, item.y, item.value);
+    </pre>
+</div>
+<output class="output">
+    <code>
+        <script>
+            class Matrix
+            {
+                constructor(width, height, content = (x,y) => undefined)
+                {
+                    this.width = width;
+                    this.height = height;
+                    this.content = [];
+
+                    for(let y = 0; y < height; y++)
+                    {
+                        for (let x = 0; x < width; x++)
+                        {
+                            this.content[y * width + x] = content(x,y);
+                        }
+                    }
+                }
+
+                get(x, y)
+                {
+                    return this.content[y * this.width + x];
+                }
+
+                set(x, y, value)
+                {
+                    this.content[y * this.width + x] = value;
+                }
+            }
+
+            class MatrixIterator
+            {
+                constructor(matrix)
+                {
+                    this.x = 0;
+                    this.y = 0;
+                    this.matrix = matrix;
+                }
+
+                next()
+                {
+                    if(this.y == this.matrix.height)
+                        return {done: true};
+                    
+                    let value = {x: this.x,
+                                y: this.y,
+                                value : this.matrix.get(this.x, this.y)};
+                    
+                    this.x++;
+                    if(this.x == this.matrix.width)
+                    {
+                        this.x = 0;
+                        this.y++;
+                    }
+
+                    return {value, done:false};
+                }
+            }
+
+            Matrix.prototype[Symbol.iterator] = function()
+            {
+                return new MatrixIterator(this);
+            }
+
+            let matrix = new Matrix(2, 2, (x, y) => `value ${x},${y}`);
+            for (let item of matrix)
+                document.write(item.x, item.y, item.value);
+        </script>
+    </code>
+</output>
+
+<div class="code">
+    <pre>
+        class Database
+        {
+            constructor(capacity, content = (x) => undefined)
+            {
+                this.capacity = capacity;
+                this.database = [];
+
+                for(let i = 0 ; i < this.capacity; i++)
+                    this.database[i] = content(i);
+            }
+
+            get(x)
+            {
+                return this.database[x];
+            }
+
+            set(x, item)
+            {
+                this.database[x] = item;
+            }
+            
+        }
+
+        class DatabaseIterator
+        {
+            constructor(db)
+            {
+                this.x = 0;
+                this.db = db;
+            }
+
+            next()
+            {
+                if(this.x == this.db.capacity)
+                    return {done: true};
+
+                let value = {x: this.x,
+                                value: this.db.get(this.x)};
+
+                this.x++;
+                return {value, done: false};
+            }
+        }
+
+        Database.prototype[Symbol.iterator] = function()
+        {
+            return new DatabaseIterator(this);
+        }
+
+        let database = new Database(20, content = (x) => x);
+        for(let {x, value} of database)
+        {
+            document.write(`${x}, ${value}`);
+        }
+    </pre>
+</div>
+<output class="output">
+    <code>
+        <script>
+            class Database
+            {
+                constructor(capacity, content = (x) => undefined)
+                {
+                    this.capacity = capacity;
+                    this.database = [];
+
+                    for(let i = 0 ; i < this.capacity; i++)
+                        this.database[i] = content(i);
+                }
+
+                get(x)
+                {
+                    return this.database[x];
+                }
+
+                set(x, item)
+                {
+                    this.database[x] = item;
+                }
+                
+            }
+
+            class DatabaseIterator
+            {
+                constructor(db)
+                {
+                    this.x = 0;
+                    this.db = db;
+                }
+
+                next()
+                {
+                    if(this.x == this.db.capacity)
+                        return {done: true};
+
+                    let value = {x: this.x,
+                                 value: this.db.get(this.x)};
+
+                    this.x++;
+                    return {value, done: false};
+                }
+            }
+
+            Database.prototype[Symbol.iterator] = function()
+            {
+                return new DatabaseIterator(this);
+            }
+
+            let database = new Database(20, content = (x) => x);
+            for(let {x, value} of database)
+            {
+                document.write(`${x}, ${value}`);
+                document.write("<br>");
+            }
+        </script>
+    </code>
+</output>
+
+<h2>Getters, Setters, and Statics</h2>
+<p class="function">To set a getter for a property, put <code>get</code> keyword before the getter function.</p>
+<div class="code">
+    <pre>
+        class Thing
+        {
+            constructor(...)
+            {...}
+
+            get property1()
+            {
+                return this.property1;
+            }
+
+            get property2()
+            {
+                return this.property2;
+            }
+            
+            .
+            .
+            .
+        }
+    </pre>
+</div>
+
+<p class="function">To set a setter, put <code>set</code> before the setter function.</p>
+<div class="code">
+    <pre>
+        class Thing
+        {
+            constructor(...)
+            {...}
+
+            get ...
+
+            get ...
+             
+            set property1(newValue)
+            {
+                this.property1 = newValue;
+            }
+        }
+    </pre>
+</div>
+
+<p class="function">Inside a class declaration, methods that have <code>static</code> written before their
+        name are stored on the constructor.</p>
+
+<p class="note">Static method calls are made directly on the class and are not callable on instances of the class. Static methods are often used to create utility functions.</p>
+<div class="code">
+    <pre>
+        class Celsius
+        {
+            constructor(celsius = 0)
+            {
+                this.celsius = celsius;
+                this.fahrenheit = Celsius.toFahrenheit(this.celsius);
+            }
+
+            static toFahrenheit(celsius)
+            {
+                return (9/5)*celsius + 32;
+            }
+        }
+
+        let cold = new Celsius(23);
+        document.write(cold.celsius);
+        document.write(cold.fahrenheit);
+        document.write(cold.toFahrenheit);
+    </pre>
+</div>
+<output class="output">
+    <code>
+        <script>
+            class Celsius
+            {
+                constructor(celsius = 0)
+                {
+                    this.celsius = celsius;
+                    this.fahrenheit = Celsius.toFahrenheit(this.celsius);
+                }
+
+                static toFahrenheit(celsius)
+                {
+                    return (9/5)*celsius + 32;
+                }
 
 
+            }
+
+            let cold = new Celsius(23);
+            document.write(cold.celsius);
+            document.write("<br>");
+            document.write(cold.fahrenheit);
+            document.write("<br>");
+            document.write(cold.toFahrenheit);
+        </script>
+    </code>
+</output>
+
+<h2>Inheritance</h2>
+<p>JavaScript’s prototype system makes it possible to create a new class, much
+        like the old class, but with new definitions for some of its properties. The
+        prototype for the new class derives from the old prototype, but adds a new
+        definition for, say, the set method.</p>
+
+<p>In object-oriented programming terms, this is called <i>inheritance</i>.</p>
+<p class="note">The new
+        class inherits properties and behavior from the old class.</p>
+
+<p class="function">Use the <code>extends</code> keyword when inheriting from a superclass.</p>
+<p class="function">The <code>super(...)</code> method should be called inside the subclass to invoke the superclass constructor.</p>
+
+<div class="code">
+    <pre>
+        class AppleDatabase extends Database
+        {
+            constructor(capacity, appleType, content = () => "apple")
+            {
+                super(capacity, content);
+                this.appleType = appleType;
+            }
+        }
+
+        let apples = new AppleDatabase(10, "green");
+        for (let {x, value} of apples)
+        {
+            document.write(`${x}, ${value}`);
+            
+        }
+    </pre>
+</div>
+<output class="output">
+    <code>
+        <script>
+            class AppleDatabase extends Database
+            {
+                constructor(capacity, appleType, content = () => "apple")
+                {
+                    super(capacity, content);
+                    this.appleType = appleType;
+                }
+            }
+
+            let apples = new AppleDatabase(10, "green");
+            for (let {x, value} of apples)
+            {
+                document.write(`${x}, ${value}`);
+                document.write("<br>");
+                
+            }
+        </script>
+    </code>
+</output>
+
+<h2>The <code>instanceof</code> Operator</h2>
+<p class="function">To know whether an object was derived from a specific class, use the <code>instanceof</code> operator.</p>
+
+<div class="code">
+    <pre>
+        document.write(apples instanceof AppleDatabase);
+        document.write(apples instanceof Database);
+        document.write(apples instanceof Matrix);
+    </pre>
+</div>
+<output class="output">
+    <code>
+        <script>
+            document.write(apples instanceof AppleDatabase);
+            document.write("<br>");
+            document.write(apples instanceof Database);
+            document.write("<br>");
+            document.write(apples instanceof Matrix);
+        </script>
+    </code>
+</output>
 </body>
 </html>
