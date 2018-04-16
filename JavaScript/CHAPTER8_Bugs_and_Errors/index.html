@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Chapter 6. Bugs and Errors</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" media="screen" href="../styles/format.css" />
+    <script src="main.js"></script>
+</head>
+<body>
+    <h1>Chapter 8. Bugs and Errors</h1>
+    <p>Flaws in computer programs are usually called <i>bugs</i>.</p>
+    <p>Ofter, nonsense computation will merely produce <code>NaN</code> (not a number)
+        or an <code>undefined</code> value.</p>
+    
+    <p>The process of finding mistakes—bugs—in programs is called <i>debugging</i>.</p>
+
+    <h2>Strict Mode</h2>
+    <p>JavaScript can be made a little more strict by enabling <i>strict mode</i>.</p>
+    <p class="function">To activate strict mode in the file, put the string <code>"use strict";</code> at the top of the file.</p>
+    <p class="function">To activate strict mode in the function, put the string <code>"use strict";</code> at the first line of the function's body.</p>
+
+    <p class="note">Normally, when you forget to put let in front of your binding, JavaScript quietly creates a global binding and uses
+        that. In strict mode an error is reported instead.</p>
+
+    <p class="note">Another change in strict mode is that the <code>this</code> binding holds the value
+        <code>undefined</code> in functions that are not called as methods.</p>
+
+    <p class="note">Constructors created with the class notation will always complain
+        if they are called without new, making this less of a problem even in
+        non-strict mode.</p>
+    
+    <p class="note">In short, putting "use strict" at the top of your program rarely hurts and
+        might help you spot a problem.</p>
+
+    <h2>Exceptions</h2>
+    <p>Exceptions are a mechanism that makes it possible for code that runs into
+        a problem to raise (or throw) an exception.</p>
+    
+    <p class="function">The <code>throw</code> keyword is used to throw an exception.</p>
+    <p class="function">Catching one is done by
+        wrapping a piece of code in a <code>try</code> block, followed by the keyword <code>catch</code>.</p>
+    
+    <div class="code">
+        <pre>
+            function throwingErrors()
+            {
+                if(...)
+                {
+                    ...
+                    throw new Error("error description");
+                }
+            }
+
+            try
+            {
+                throwingErrors();
+            }
+            catch(error)
+            {
+                document.write(error);
+            }
+        </pre>
+    </div>
+
+    <p class="function">The <code>Error()</code> constructor was used to create an exception value.</p>
+    
+    <p>The effect of an exception is another kind of control flow.</p>
+    <p class="function">Use the <code>finally</code> block to tidy up <code>try</code> and <code>catch</code> blocks.</p>
+
+
+    <h2>Selective Catching</h2>
+    <p>JavaScript (in a rather glaring omission) doesn’t provide direct support for
+        selectively catching exceptions: either you catch them all or you don’t catch
+        any. This makes it tempting to assume that the exception you get is the one
+        you were thinking about when you wrote the <code>catch</code> block.</p>
+    
+    <p class="note">As a general rule, don’t blanket-catch exceptions unless it is for the purpose
+        of “routing” them somewhere—for example, over the network to tell another
+        system that our program crashed.</p>
+    
+    <p class="function">To create a selective <code>catch</code> block, define your own error by creating a class that extends the <code>Error</code> class
+        and use the <code>instanceof</code> operator to check the type of the error (in the <code>catch</code> block).</p>
+
+    <div class="code">
+        <pre>
+            class InputError extends Error {}
+        </pre>
+    </div>
+    <output class="output">
+        <code>
+            <script>
+                class InputError extends Error {}
+            </script>
+        </code>
+    </output>
+
+    <p>The <code>InputError</code> class extends the <code>Error</code> class but did not
+    define a constructor. This means that it will use the constructor of the superclass which has a <code>message</code> argument.</p>
+
+    <div class="code">
+        <pre>
+            function picky(letter)
+            {
+                document.write("Pass me the letter 'a'.");
+                if(letter != 'a')
+                    throw new InputError("That is not what I am looking for!");
+                else
+                {
+                    document.write("Thank you!");
+                }
+            }
+
+            let letter = 'b';
+            try
+            {
+                picky(letter);
+            }
+            catch(e)
+            {
+                if (e instanceof InputError)
+                {
+                    document.write(e);
+                }
+            }
+        </pre>
+    </div>
+    <output class="output">
+        <code>
+            <script>
+                function picky(letter)
+                {
+                    document.write("Pass me the letter 'a'.");
+                    document.write("<br>");
+                    if(letter != 'a')
+                        throw new InputError("That is not what I am looking for!");
+                    else
+                    {
+                        document.write("Thank you!");
+                    }
+                }
+
+                let letter = 'b';
+                try
+                {
+                    picky(letter);
+                    letter = 'a';
+                    picky(letter);
+                }
+                catch(e)
+                {
+                    if (e instanceof InputError)
+                    {
+                        document.write(e);
+                    }
+                }
+            </script>
+        </code>
+    </output>
+    <p>Notice that after the <code>try</code> block has detected an error, it will not further execute the statements
+    after the statement that threw the error. It immediately went to the <code>catch</code> block and never returned.</p>
+    <p>The <code>catch</code> block will only handle the <code>InputError</code> errors.</p>
+</body>
+</html>
